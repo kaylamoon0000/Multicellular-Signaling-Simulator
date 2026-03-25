@@ -84,3 +84,4 @@ function loop() {
 }
 
 loop();
+loop();
