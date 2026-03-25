@@ -1,4 +1,48 @@
 const canvas = document.getElementById("simCanvas");
+    nextGrid[cell.x][cell.y] += CELL_TYPES[cell.type].secretion;
+  });
+
+  [grid, nextGrid] = [nextGrid, grid];
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw signal heatmap
+  for (let i = 0; i < gridSize; i++) {
+    for (let j = 0; j < gridSize; j++) {
+      const v = Math.min(grid[i][j], 1);
+      if (v > 0) {
+        ctx.fillStyle = `rgba(0, 180, 255, ${v})`;
+        ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
+      }
+    }
+  }
+
+  // Draw cells
+  cells.forEach(cell => {
+    ctx.fillStyle = CELL_TYPES[cell.type].color;
+    ctx.beginPath();
+    ctx.arc(
+      cell.x * cellSize + cellSize / 2,
+      cell.y * cellSize + cellSize / 2,
+      cellSize / 2,
+      0,
+      Math.PI * 2
+    );
+    ctx.fill();
+  });
+}
+
+function loop() {
+  if (running) stepSimulation();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+loop();
+```javascript
+const canvas = document.getElementById("simCanvas");
 const ctx = canvas.getContext("2d");
 
 const gridSize = 150;
@@ -83,5 +127,4 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
-loop();
 loop();
