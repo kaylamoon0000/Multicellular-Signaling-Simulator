@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: white;
+}
+
+#container {
+  display: flex;
+}
+
+#simCanvas {
+  border: 1px solid #333;
+}
+
+#controls {
+  width: 250px;
+  padding: 15px;
+  background: #1e1e1e;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
