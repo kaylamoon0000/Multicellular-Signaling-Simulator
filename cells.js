@@ -1,3 +1,42 @@
+const CELL_TYPES = {
+  neuron: {
+    color: "yellow",
+    secretion: 0.3,
+    name: "Neuron",
+    description: "Excitable signaling cell responsible for transmitting electrical and chemical signals in the nervous system."
+  },
+  astrocyte: {
+    color: "magenta",
+    secretion: 0.4,
+    name: "Astrocyte",
+    description: "Glial support cell that regulates neurotransmitters, maintains ion balance, and supports the blood–brain barrier."
+  },
+  microglia: {
+    color: "orange",
+    secretion: 0.6,
+    name: "Microglia",
+    description: "Resident immune cell of the central nervous system involved in synaptic pruning and neuroinflammation."
+  },
+  oligodendrocyte: {
+    color: "#ffcc66",
+    secretion: 0.25,
+    name: "Oligodendrocyte",
+    description: "Produces myelin sheaths around neuronal axons, enabling rapid electrical conduction."
+  },
+  stem: {
+    color: "cyan",
+    secretion: 0.5,
+    name: "Stem Cell",
+    description: "Undifferentiated cell capable of self-renewal and differentiation into specialized cell types."
+  },
+  cancer: {
+    color: "red",
+    secretion: 0.8,
+    name: "Cancer Cell",
+    description: "Aberrantly proliferating cell with altered signaling and resistance to normal growth controls."
+  }
+};
+```javascript
 // Expanded library of biologically relevant cell types
 const CELL_TYPES = {
   // Stem & progenitor cells
