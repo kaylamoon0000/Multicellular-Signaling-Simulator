@@ -1,9 +1,9 @@
 const canvas = document.getElementById("simCanvas");
 const ctx = canvas.getContext("2d");
-canvas.width = 600;
-canvas.height = 600;
 
-const gridSize = 100;
+const gridSize = 150;
+const cellSize = canvas.width / gridSize;
+
 let diffusion = 0.2;
 let decay = 0.01;
 
@@ -13,30 +13,22 @@ let cells = [];
 let running = true;
 
 function initGrid() {
-  grid = [];
-  nextGrid = [];
-  for (let i = 0; i < gridSize; i++) {
-    grid[i] = [];
-    nextGrid[i] = [];
-    for (let j = 0; j < gridSize; j++) {
-      grid[i][j] = 0;
-      nextGrid[i][j] = 0;
-    }
-  }
+  grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
+  nextGrid = Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
 }
-
 initGrid();
 
 canvas.addEventListener("click", e => {
   const rect = canvas.getBoundingClientRect();
-  const x = Math.floor((e.clientX - rect.left) / 6);
-  const y = Math.floor((e.clientY - rect.top) / 6);
+  const x = Math.floor((e.clientX - rect.left) / cellSize);
+  const y = Math.floor((e.clientY - rect.top) / cellSize);
 
   const type = document.getElementById("cellType").value;
+
   cells.push({ x, y, type });
 });
 
-function update() {
+function stepSimulation() {
   diffusion = parseFloat(document.getElementById("diffusion").value);
   decay = parseFloat(document.getElementById("decay").value);
 
@@ -46,29 +38,32 @@ function update() {
         grid[i - 1][j] + grid[i + 1][j] + grid[i][j - 1] + grid[i][j + 1] -
         4 * grid[i][j];
 
-      nextGrid[i][j] =
-        grid[i][j] + diffusion * laplacian - decay * grid[i][j];
+      nextGrid[i][j] = grid[i][j] + diffusion * laplacian - decay * grid[i][j];
     }
   }
 
-  cells.forEach(cell => {
-    nextGrid[cell.x][cell.y] += CELL_TYPES[cell.type].secretion;
-  });
+  for (const cell of cells) {
+    const secretion = CELL_TYPES[cell.type].secretion;
+    if (cell.x > 0 && cell.x < gridSize && cell.y > 0 && cell.y < gridSize) {
+      nextGrid[cell.x][cell.y] += secretion;
+    }
+  }
 
   [grid, nextGrid] = [nextGrid, grid];
 }
 
 function draw() {
-  const cellSize = canvas.width / gridSize;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
       const value = Math.min(grid[i][j], 1);
-      ctx.fillStyle = `rgba(0, 150, 255, ${value})`;
+      ctx.fillStyle = `rgba(0, 200, 255, ${value})`;
       ctx.fillRect(i * cellSize, j * cellSize, cellSize, cellSize);
     }
   }
 
-  cells.forEach(cell => {
+  for (const cell of cells) {
     ctx.fillStyle = CELL_TYPES[cell.type].color;
     ctx.beginPath();
     ctx.arc(
@@ -79,11 +74,11 @@ function draw() {
       Math.PI * 2
     );
     ctx.fill();
-  });
+  }
 }
 
 function loop() {
-  if (running) update();
+  if (running) stepSimulation();
   draw();
   requestAnimationFrame(loop);
 }
