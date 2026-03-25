@@ -11,6 +11,46 @@
 
     <div id="controls">
       <h2>Phenotype Selection</h2>
+
+      <label>Select one or more cell types (Ctrl/Cmd + Click):</label>
+      <select id="cellType" multiple size="8"></select>
+
+      <div id="cellDescription" class="descriptionBox">
+        <em>Hover over a cell type to see description.</em>
+      </div>
+
+      <h2>Simulation Parameters</h2>
+      <label>Diffusion Coefficient
+        <input type="range" id="diffusion" min="0.01" max="1" step="0.01" value="0.2" />
+      </label>
+      <label>Decay Rate
+        <input type="range" id="decay" min="0" max="0.2" step="0.005" value="0.01" />
+      </label>
+
+      <button id="playBtn">Pause</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
+
+  <script src="cells.js"></script>
+  <script src="simulation.js"></script>
+  <script src="ui.js"></script>
+</body>
+</html>
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>In‑Silico Tissue Interaction Simulator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="container">
+    <canvas id="simCanvas" width="800" height="800"></canvas>
+
+    <div id="controls">
+      <h2>Phenotype Selection</h2>
       <select id="cellType"></select>
 
       <h2>Simulation Parameters</h2>
